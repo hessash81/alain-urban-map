@@ -39,6 +39,12 @@ header{
 header .spacer{flex:1}
 .hbtn{font-family:'Tajawal';font-weight:700;font-size:13.5px;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:filter .15s}
 .hbtn:hover{filter:brightness(1.1)}
+.upd{
+  font-size:11.5px;font-weight:700;color:#F3EDDD;opacity:.85;
+  border:1px solid rgba(243,237,221,.4);border-radius:14px;padding:5px 12px;
+  white-space:nowrap;
+}
+@media (max-width:960px){.upd{display:none}}
 #basebtn{background:transparent;border:1.5px solid rgba(243,237,221,.5);color:#F3EDDD}
 #tourbtn{background:var(--gold);color:#2A2109}
 #tourbtn.active{background:#F3EDDD;color:var(--palm)}
@@ -54,12 +60,13 @@ main{flex:1;position:relative;overflow:hidden}
 #map{position:absolute;inset:0;z-index:1}
 
 /* ===== KPIs ===== */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
-.kpi{padding:13px 6px;text-align:center;border-inline-start:1px solid var(--line)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)}
+.kpi{padding:13px 4px;text-align:center;border-inline-start:1px solid var(--line)}
 .kpi:first-child{border-inline-start:none}
-.kpi b{display:block;font-size:21px;font-weight:800;color:var(--palm);font-variant-numeric:tabular-nums}
-.kpi b i{font-style:normal;font-size:12px;font-weight:700;color:var(--stone)}
-.kpi span{font-size:10.5px;color:var(--stone);font-weight:500;display:block;line-height:1.4}
+.kpi b{display:block;font-size:19px;font-weight:800;color:var(--palm);font-variant-numeric:tabular-nums}
+.kpi b i{font-style:normal;font-size:11px;font-weight:700;color:var(--stone)}
+.kpi span{font-size:10px;color:var(--stone);font-weight:500;display:block;line-height:1.4}
+.kpi.pct b{color:var(--gold)}
 
 /* ===== Filters ===== */
 .filters{padding:12px 16px 10px;border-bottom:1px solid var(--line)}
@@ -148,15 +155,67 @@ main{flex:1;position:relative;overflow:hidden}
 #legend .pt{width:10px;height:10px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);flex-shrink:0;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 
 .leaflet-control-zoom{margin-top:14px!important}
+#fitall{
+  position:absolute;top:14px;left:62px;z-index:1000;
+  font-family:'Tajawal';font-size:12.5px;font-weight:700;
+  background:var(--palm);color:#F3EDDD;border:none;border-radius:9px;
+  padding:9px 14px;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  transition:filter .15s;
+}
+#fitall:hover{filter:brightness(1.15)}
 .leaflet-interactive{cursor:pointer}
 
+#panelToggle{display:none}
+
 @media (max-width:840px){
-  .app{flex-direction:column}
-  aside{width:100%;height:46%;order:2;border-inline-start:none;border-top:1px solid var(--line)}
-  main{height:54%}
-  .brand h1{font-size:15px}
-  #legend{display:none}
+  header{height:54px;padding:0 12px;gap:8px}
+  .brand .logo{height:38px;padding:4px 7px}
+  .brand h1{font-size:13px}
+  .brand h1 small{font-size:9px}
+  .hbtn{font-size:11.5px;padding:7px 10px}
   #basebtn span{display:none}
+  .tour-nav button{padding:6px 9px;font-size:11.5px}
+
+  .app{flex-direction:column;height:calc(100vh - 54px);height:calc(100dvh - 54px)}
+  main{flex:1;min-height:0;order:1}
+  aside{
+    width:100%;order:2;border-inline-start:none;border-top:2px solid var(--gold);
+    height:46%;flex-shrink:0;transition:height .28s ease;
+  }
+  aside.collapsed{height:132px}
+  aside.collapsed .filters,aside.collapsed .plist{display:none}
+  aside.collapsed .pt-chev{transform:rotate(180deg)}
+
+  #panelToggle{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;background:var(--paper);border:none;border-bottom:1px solid var(--line);
+    font-family:'Tajawal';font-size:12px;font-weight:700;color:var(--palm);
+    padding:8px;cursor:pointer;
+  }
+  .pt-chev{transition:transform .28s;font-size:13px}
+
+  .kpi{padding:9px 2px}
+  .kpi b{font-size:16px}
+  .kpi b i{font-size:9.5px}
+  .kpi span{font-size:8.5px}
+  .filters{padding:10px 12px 8px}
+  .chip{font-size:11px;padding:5px 10px}
+
+  #legend{display:none}
+  #fitall{top:12px;left:56px;font-size:11px;padding:8px 10px}
+
+  #card{
+    width:calc(100% - 20px);inset-inline-start:10px;bottom:10px;
+    padding:14px 14px 12px;max-height:52vh;overflow-y:auto;
+  }
+  #card h2{font-size:17px}
+  #card p{font-size:12.5px;line-height:1.7}
+  #c-photos img{height:62px}
+  #card .meta{gap:10px}
+
+  #lightbox .lb-nav{width:38px;height:38px;font-size:18px}
+  #lightbox img{max-height:72vh}
 }
 </style>
 </head>
@@ -170,6 +229,7 @@ main{flex:1;position:relative;overflow:hidden}
     </h1>
   </div>
   <div class="spacer"></div>
+  <span class="upd" id="lastupd">آخر تحديث: يوليو 2026</span>
   <button class="hbtn" id="basebtn">🛰 <span>قمر صناعي</span></button>
   <div class="tour-nav" id="tournav">
     <button id="tprev">‹ السابق</button>
@@ -181,6 +241,8 @@ main{flex:1;position:relative;overflow:hidden}
 <div class="app">
   <main>
     <div id="map" dir="ltr"></div>
+
+    <button id="fitall" title="عرض جميع المشاريع">⤢ عرض جميع المشاريع</button>
 
     <div id="legend">
       <div style="font-weight:700;color:#7a6a45;margin-bottom:5px">حالة المشروع</div>
@@ -218,12 +280,16 @@ main{flex:1;position:relative;overflow:hidden}
     <button class="lb-nav" id="lb-next" aria-label="التالية">›</button>
   </div>
 
-  <aside>
+  <aside id="sidepanel">
+    <button id="panelToggle" aria-label="طي/فتح قائمة المشاريع">
+      <span class="pt-label">قائمة المشاريع</span><span class="pt-chev">▾</span>
+    </button>
     <div class="kpis">
       <div class="kpi"><b id="k-total">0</b><span>إجمالي<br>المشاريع</span></div>
       <div class="kpi"><b id="k-done">0</b><span>مشاريع<br>منجزة</span></div>
       <div class="kpi"><b id="k-prog">0</b><span>جاري<br>التنفيذ</span></div>
-      <div class="kpi"><b id="k-km">0<i> كم</i></b><span>أطوال الشوارع<br>المطوّرة</span></div>
+      <div class="kpi pct"><b id="k-pct">0%</b><span>نسبة<br>الإنجاز</span></div>
+      <div class="kpi"><b id="k-km">0<i> كم</i></b><span>أطوال<br>المحاور</span></div>
     </div>
     <div class="filters">
       <h3>نوع التطوير</h3>
@@ -418,9 +484,11 @@ if(allBounds.isValid())map.fitBounds(allBounds.pad(0.25));
 /* ===== KPIs ===== */
 function updateKPIs(){
   const vis=PROJECTS.filter(isVisible);
+  const done=vis.filter(p=>p.status==='done').length;
   document.getElementById('k-total').textContent=vis.length;
-  document.getElementById('k-done').textContent=vis.filter(p=>p.status==='done').length;
+  document.getElementById('k-done').textContent=done;
   document.getElementById('k-prog').textContent=vis.filter(p=>p.status==='prog').length;
+  document.getElementById('k-pct').textContent=vis.length?Math.round(done/vis.length*100)+'%':'—';
   const km=vis.filter(p=>p.km).reduce((s,p)=>s+p.km,0);
   document.getElementById('k-km').innerHTML=km.toFixed(1)+'<i> كم</i>';
 }
@@ -523,6 +591,7 @@ function select(id,fromTour){
 
   card.classList.add('show');
   card.classList.toggle('touring',touring);
+  mobileCollapse();
 }
 
 /* ===== عارض الصور (Lightbox) ===== */
@@ -554,6 +623,32 @@ function closeCard(){
   });
 }
 document.getElementById('cardclose').onclick=()=>{stopTour();closeCard();};
+
+/* ===== زر عرض جميع المشاريع ===== */
+document.getElementById('fitall').onclick=()=>{
+  stopTour();closeCard();
+  const b=L.latLngBounds([]);
+  PROJECTS.filter(isVisible).forEach(p=>{
+    if(p.path)p.path.forEach(pt=>b.extend(pt));
+    if(p.pos)b.extend(p.pos);
+  });
+  if(b.isValid())map.flyToBounds(b.pad(0.25),{duration:1});
+};
+
+/* ===== لوحة الهاتف القابلة للطي ===== */
+const sidepanel=document.getElementById('sidepanel');
+const isMobile=()=>window.innerWidth<=840;
+document.getElementById('panelToggle').onclick=()=>{
+  sidepanel.classList.toggle('collapsed');
+  setTimeout(()=>map.invalidateSize(),320);
+};
+function mobileCollapse(){
+  if(isMobile()&&!sidepanel.classList.contains('collapsed')){
+    sidepanel.classList.add('collapsed');
+    setTimeout(()=>map.invalidateSize(),320);
+  }
+}
+window.addEventListener('resize',()=>map.invalidateSize());
 
 /* ===== جولة العرض ===== */
 const tourbtn=document.getElementById('tourbtn');
